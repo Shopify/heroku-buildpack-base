@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+#
+# Detect if the buildpack can be applied to the app.
+#
+# ---
+#
+# The 'detect' script is executed by the slug compiler with one argument:
+#   $1: build_dir, location of your app directory on the build dyno
+#
+# If 'detect' exits with status code 0:
+#   stdout is inserted in "-----> <X> app detected" and 'compile' script is run
+# If 'detect' exits with status code != 0:
+#   the buildpack is not used
+#
+# More information here: https://devcenter.heroku.com/articles/buildpack-api
+#------------------------------------------------------------------------------#
+
+BUILD_DIR=$1
+
+if [ -f "${BUILD_DIR}/.pipa/prepare-image" ]; then
+  echo "Base" && exit 0
+else
+  echo "no" && exit 1
+fi
